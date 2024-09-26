@@ -9,6 +9,10 @@ Features
     Simple user interface
     Logs actions and changes
 
+## Interface
+
+![](https://github.com/GiFXED/Roblox-FFlag-Editor/blob/main/image.png)
+
 ## Note
 
 This is a beta version. If you encounter any bugs, please report them on the GitHub repository.
