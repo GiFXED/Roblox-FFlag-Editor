@@ -13,6 +13,10 @@ Features
 
 ![](https://github.com/GiFXED/Roblox-FFlag-Editor/blob/main/image.png)
 
+## Example
+
+![](https://github.com/GiFXED/Roblox-FFlag-Editor/blob/main/Example.mp4)
+
 ## Note
 
 This is a beta version. If you encounter any bugs, please report them on the GitHub repository.
