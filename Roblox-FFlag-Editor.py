@@ -5,8 +5,8 @@ from PyQt5 import QtWidgets
 class RobloxFFlagEditor(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta)")
-        self.setFixedSize(400, 400)
+        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta 2)")
+        self.setFixedSize(400, 500)
         self.initUI()
         self.ensure_json_exists()
 
@@ -45,6 +45,22 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
         self.gravity_button.clicked.connect(lambda: self.set_flags(low_gravity_flags))
         self.basic_layout.addWidget(self.gravity_button)
 
+        self.no_animations_button = QtWidgets.QPushButton("No Animations")
+        self.no_animations_button.clicked.connect(lambda: self.set_flags(no_animations_flags))
+        self.basic_layout.addWidget(self.no_animations_button)
+
+        self.xray_button = QtWidgets.QPushButton("Xray")
+        self.xray_button.clicked.connect(lambda: self.set_flags(xray_flags))
+        self.basic_layout.addWidget(self.xray_button)
+
+        self.disable_telemetry_button = QtWidgets.QPushButton("Disable Telemetry")
+        self.disable_telemetry_button.clicked.connect(lambda: self.set_flags(disable_telemetry_flags))
+        self.basic_layout.addWidget(self.disable_telemetry_button)
+
+        self.clear_file_button = QtWidgets.QPushButton("Clear fflag File")
+        self.clear_file_button.clicked.connect(self.clear_json)
+        self.basic_layout.addWidget(self.clear_file_button)
+
         self.log = QtWidgets.QTextEdit(self)
         self.log.setReadOnly(True)
         self.basic_layout.addWidget(self.log)
@@ -60,6 +76,14 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
         self.add_custom_fflag_button = QtWidgets.QPushButton("Add Custom FFlag")
         self.add_custom_fflag_button.clicked.connect(self.add_custom_fflag)
         self.advanced_layout.addWidget(self.add_custom_fflag_button)
+
+        self.modify_custom_fflag_button = QtWidgets.QPushButton("Modify Custom FFlag")
+        self.modify_custom_fflag_button.clicked.connect(self.modify_custom_fflag)
+        self.advanced_layout.addWidget(self.modify_custom_fflag_button)
+
+        self.delete_custom_fflag_button = QtWidgets.QPushButton("Delete Custom FFlag")
+        self.delete_custom_fflag_button.clicked.connect(self.delete_custom_fflag)
+        self.advanced_layout.addWidget(self.delete_custom_fflag_button)
 
         self.log_advanced = QtWidgets.QTextEdit(self)
         self.log_advanced.setReadOnly(True)
@@ -159,11 +183,45 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
         else:
             self.log_advanced.append("Please enter both FFlag and value.")
 
-noclip_flags = [{
+    def modify_custom_fflag(self):
+        custom_fflag = self.custom_fflag_input.text()
+        custom_value = self.custom_value_input.text()
+
+        if custom_fflag and custom_value:
+            data = self.load_json()
+            if custom_fflag in data:
+                data[custom_fflag] = custom_value
+                self.save_json(data)
+                self.log_advanced.append(f"Modified custom FFlag: {custom_fflag} = {custom_value}")
+            else:
+                self.log_advanced.append(f"FFlag {custom_fflag} does not exist.")
+        else:
+            self.log_advanced.append("Please enter both FFlag and value.")
+
+    def delete_custom_fflag(self):
+        custom_fflag = self.custom_fflag_input.text()
+
+        if custom_fflag:
+            data = self.load_json()
+            if custom_fflag in data:
+                data.pop(custom_fflag)
+                self.save_json(data)
+                self.log_advanced.append(f"Deleted custom FFlag: {custom_fflag}")
+            else:
+                self.log_advanced.append(f"FFlag {custom_fflag} does not exist.")
+        else:
+            self.log_advanced.append("Please enter the FFlag to delete.")
+
+    def clear_json(self):
+        data = {}
+        self.save_json(data)
+        self.log.append("Cleared entire ClientAppSettings.json file.")
+
+noclip_flags = {
     "FFlagDebugSimDefaultPrimalSolver": "True",
-    "DFIntMaximumFreefallMoveTimeInTenths": "1000",
+    "DFIntMaximumFreefallMoveTimeInTenths": "99999",
     "DFIntDebugSimPrimalStiffness": "0"
-}]
+}
 
 network_ownership_flags = {
     "DFIntMinClientSimulationRadius": "2147000000",
@@ -176,7 +234,28 @@ low_gravity_flags = {
     "DFIntDebugSimPrimalLineSearch": "3"
 }
 
-if __name__ == "__main__":
+no_animations_flags = {
+    "DFIntReplicatorAnimationTrackLimitPerAnimator": "-1"
+}
+
+xray_flags = {
+    "DFIntCullFactorPixelThresholdMainViewHighQuality": "10000",
+    "DFIntCullFactorPixelThresholdMainViewLowQuality": "10000",
+    "DFIntCullFactorPixelThresholdShadowMapHighQuality": "10000",
+    "DFIntCullFactorPixelThresholdShadowMapLowQuality": "10000"
+}
+
+disable_telemetry_flags = {
+    "FFlagDebugDisableTelemetryEphemeralCounter": "True",
+    "FFlagDebugDisableTelemetryEphemeralStat": "True",
+    "FFlagDebugDisableTelemetryEventIngest": "True",
+    "FFlagDebugDisableTelemetryPoint": "True",
+    "FFlagDebugDisableTelemetryV2Counter": "True",
+    "FFlagDebugDisableTelemetryV2Event": "True",
+    "FFlagDebugDisableTelemetryV2Stat": "True"
+}
+
+if __name__ == '__main__':
     app = QtWidgets.QApplication([])
     window = RobloxFFlagEditor()
     window.show()
