@@ -1,7 +1,9 @@
 > [!NOTE]
 > If you find our repository useful don't forget to star!
+
 > [!NOTE]
 > This is a beta version. If you encounter any bugs, please report them on the GitHub repository.
+
 > [!NOTE]
 > After roblox updates you will have to redo your fflags.
 
