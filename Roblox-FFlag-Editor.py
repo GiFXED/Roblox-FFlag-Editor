@@ -5,8 +5,8 @@ from PyQt5 import QtWidgets
 class RobloxFFlagEditor(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta 2)")
-        self.setFixedSize(400, 500)
+        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta 3)")
+        self.setFixedSize(400, 600)
         self.initUI()
         self.ensure_json_exists()
 
@@ -45,17 +45,40 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
         self.gravity_button.clicked.connect(lambda: self.set_flags(low_gravity_flags))
         self.basic_layout.addWidget(self.gravity_button)
 
-        self.no_animations_button = QtWidgets.QPushButton("No Animations")
-        self.no_animations_button.clicked.connect(lambda: self.set_flags(no_animations_flags))
+        self.no_animations_button = QtWidgets.QPushButton("Toggle No Animations")
+        self.no_animations_button.clicked.connect(lambda: self.toggle_fflag("No Animations", no_animations_flags))
         self.basic_layout.addWidget(self.no_animations_button)
 
-        self.xray_button = QtWidgets.QPushButton("Xray")
-        self.xray_button.clicked.connect(lambda: self.set_flags(xray_flags))
+        self.xray_button = QtWidgets.QPushButton("Toggle Xray")
+        self.xray_button.clicked.connect(lambda: self.toggle_fflag("Xray", xray_flags))
         self.basic_layout.addWidget(self.xray_button)
 
-        self.disable_telemetry_button = QtWidgets.QPushButton("Disable Telemetry")
-        self.disable_telemetry_button.clicked.connect(lambda: self.set_flags(disable_telemetry_flags))
+        self.disable_telemetry_button = QtWidgets.QPushButton("Toggle Disable Telemetry")
+        self.disable_telemetry_button.clicked.connect(lambda: self.toggle_fflag("Disable Telemetry", disable_telemetry_flags))
         self.basic_layout.addWidget(self.disable_telemetry_button)
+
+        self.disable_touch_events_button = QtWidgets.QPushButton("Toggle Disable Touch Events")
+        self.disable_touch_events_button.clicked.connect(lambda: self.toggle_fflag("Disable Touch Events", disable_touch_events_flags))
+        self.basic_layout.addWidget(self.disable_touch_events_button)
+
+        self.disable_ads_button = QtWidgets.QPushButton("Toggle Disable In-game Ads")
+        self.disable_ads_button.clicked.connect(lambda: self.toggle_fflag("Disable In-game Ads", disable_ads_flags))
+        self.basic_layout.addWidget(self.disable_ads_button)
+
+        self.disable_remote_events_button = QtWidgets.QPushButton("Toggle Disable Remote Events")
+        self.disable_remote_events_button.clicked.connect(lambda: self.toggle_fflag("Disable Remote Events", disable_remote_events_flags))
+        self.basic_layout.addWidget(self.disable_remote_events_button)
+
+        self.max_zoom_label = QtWidgets.QLabel("Set Max Zoom Distance:")
+        self.basic_layout.addWidget(self.max_zoom_label)
+
+        self.max_zoom_input = QtWidgets.QSpinBox(self)
+        self.max_zoom_input.setRange(10, 9999)
+        self.basic_layout.addWidget(self.max_zoom_input)
+
+        self.set_zoom_button = QtWidgets.QPushButton("Set Max Zoom Distance")
+        self.set_zoom_button.clicked.connect(self.set_zoom_distance)
+        self.basic_layout.addWidget(self.set_zoom_button)
 
         self.clear_file_button = QtWidgets.QPushButton("Clear fflag File")
         self.clear_file_button.clicked.connect(self.clear_json)
@@ -147,15 +170,13 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
     def toggle_fflag(self, flag_name, flag_data):
         data = self.load_json()
 
-        if flag_name == "Noclip":
-            if "FFlagDebugSimDefaultPrimalSolver" in data:
-                self.log.append("Disabling Noclip...")
-                data.pop("FFlagDebugSimDefaultPrimalSolver", None)
-                data.pop("DFIntMaximumFreefallMoveTimeInTenths", None)
-                data.pop("DFIntDebugSimPrimalStiffness", None)
-            else:
-                self.log.append("Enabling Noclip...")
-                data.update(flag_data[0])
+        if flag_name in data:
+            self.log.append(f"Disabling {flag_name}...")
+            for key in flag_data:
+                data.pop(key, None)
+        else:
+            self.log.append(f"Enabling {flag_name}...")
+            data.update(flag_data)
 
         self.save_json(data)
 
@@ -165,6 +186,13 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
         data["DFIntMaxAltitudePDStickHipHeightPercent"] = str(hip_height_value)
         self.save_json(data)
         self.log.append(f"Set Hip Height to {hip_height_value}.")
+
+    def set_zoom_distance(self):
+        zoom_distance = self.max_zoom_input.value()
+        data = self.load_json()
+        data["FIntCameraMaxZoomDistance"] = str(zoom_distance)
+        self.save_json(data)
+        self.log.append(f"Set Max Zoom Distance to {zoom_distance}.")
 
     def set_flags(self, flag_data):
         data = self.load_json()
@@ -253,6 +281,18 @@ disable_telemetry_flags = {
     "FFlagDebugDisableTelemetryV2Counter": "True",
     "FFlagDebugDisableTelemetryV2Event": "True",
     "FFlagDebugDisableTelemetryV2Stat": "True"
+}
+
+disable_touch_events_flags = {
+    "DFIntTouchSenderMaxBandwidthBps": "-1"
+}
+
+disable_ads_flags = {
+    "FFlagAdServiceEnabled": "False"
+}
+
+disable_remote_events_flags = {
+    "DFIntRemoteEventSingleInvocationSizeLimit": "1"
 }
 
 if __name__ == '__main__':
