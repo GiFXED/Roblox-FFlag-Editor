@@ -1,6 +1,6 @@
 > [!NOTE]
-> If you find our repository useful don't forget to star!
-> This is a beta version. If you encounter any bugs, please report them on the GitHub repository.
+> If you find our repository useful don't forget to star!\n
+> This is a beta version. If you encounter any bugs, please report them on the GitHub repository.\n
 > After roblox updates you will have to redo your fflags.
 
 ## Roblox FFlag Editor
