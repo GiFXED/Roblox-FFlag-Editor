@@ -13,6 +13,12 @@ Features
 
 ![](https://github.com/GiFXED/Roblox-FFlag-Editor/blob/main/image.png)
 
+## What are fflags
+
+Roblox Fast Flags are a type of configuration setting used internally by Roblox engineers to quickly enable or disable features and functionalities within the Roblox platform. These flags allow the developers to test new features, make updates, and address issues without needing to deploy a full update to the platform.
+
 ## Note
 
 This is a beta version. If you encounter any bugs, please report them on the GitHub repository.
+
+After roblox updates you have to readd your fflags.
