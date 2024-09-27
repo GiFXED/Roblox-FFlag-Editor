@@ -1,3 +1,6 @@
+> [!NOTE]
+> If you find our repository useful don't forget to star!
+
 ## Roblox FFlag Editor
 
 The Roblox FFlag Editor is a Python application designed for easy management of FFlags in Roblox. This tool allows users to toggle specific flags, set hip height values, and add custom FFlags.
