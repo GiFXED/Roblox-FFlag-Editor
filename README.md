@@ -21,4 +21,4 @@ Roblox Fast Flags are a type of configuration setting used internally by Roblox 
 
 This is a beta version. If you encounter any bugs, please report them on the GitHub repository.
 
-After roblox updates you have to readd your fflags.
+After roblox updates you will have to redo your fflags.
