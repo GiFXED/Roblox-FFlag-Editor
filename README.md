@@ -1,3 +1,6 @@
+> [!WARNING]
+> Will not work if you have bloxstrap installed.
+
 > [!NOTE]
 > If you find our repository useful don't forget to star!
 
