@@ -6,7 +6,7 @@ from PyQt5 import QtCore
 class RobloxFFlagEditor(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta 3.5)")
+        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta 3.5.1)")
         self.setFixedSize(400, 600)
         self.initUI()
         self.ensure_json_exists()
@@ -192,9 +192,10 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
                 data.pop("DFIntDebugSimPrimalStiffness", None)
             else:
                 self.log.append("Enabling Noclip...")
-                data.update(flag_data[0])
+                data.update(flag_data)
 
         self.save_json(data)
+
 
     def set_hip_height(self):
         hip_height_value = self.hip_height_input.value()
