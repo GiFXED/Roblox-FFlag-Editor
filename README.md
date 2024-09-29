@@ -30,7 +30,6 @@ Features
     Add `_PlaceFilter` after the Fast Flag name.
     Add a semicolon after the Value (`;`). Examples: `True;`, `1;`.
     Include a Place ID after the semicolon. Examples: `True;123456`, `1;123456`.
-    Your configuration is complete!
 
 ## What are fflags
 
