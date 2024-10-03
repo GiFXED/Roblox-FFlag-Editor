@@ -6,7 +6,7 @@ from PyQt5 import QtCore
 class RobloxFFlagEditor(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta 3.5.1)")
+        self.setWindowTitle("Roblox FFlag Editor - @GiFXED (Beta 3.6)")
         self.setFixedSize(400, 600)
         self.initUI()
         self.ensure_json_exists()
@@ -25,10 +25,42 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
         self.basic_layout = QtWidgets.QVBoxLayout(self.basic_tab)
         self.advanced_layout = QtWidgets.QVBoxLayout(self.advanced_tab)
         self.info_layout = QtWidgets.QVBoxLayout(self.info_tab)
-        
+
         self.noclip_button = QtWidgets.QPushButton("Toggle Noclip")
         self.noclip_button.clicked.connect(lambda: self.toggle_fflag("Noclip", noclip_flags))
         self.basic_layout.addWidget(self.noclip_button)
+
+        self.disable_touch_events_button = QtWidgets.QPushButton("Disable touch events")
+        self.disable_touch_events_button.clicked.connect(lambda: self.set_flags(disable_touch_events_flags))
+        self.basic_layout.addWidget(self.disable_touch_events_button)
+
+        self.disable_ads_button = QtWidgets.QPushButton("Disable In-game Ads")
+        self.disable_ads_button.clicked.connect(lambda: self.toggle_fflag("Disable In-game Ads", disable_ads_flags))
+        self.basic_layout.addWidget(self.disable_ads_button)
+
+        self.disable_remote_events_button = QtWidgets.QPushButton("Disable Remote Events")
+        self.disable_remote_events_button.clicked.connect(lambda: self.toggle_fflag("Disable Remote Events", disable_remote_events_flags))
+        self.basic_layout.addWidget(self.disable_remote_events_button)
+
+        self.disable_telemetry_button = QtWidgets.QPushButton("Disable Telemetry")
+        self.disable_telemetry_button.clicked.connect(lambda: self.set_flags(disable_telemetry_flags))
+        self.basic_layout.addWidget(self.disable_telemetry_button)
+
+        self.no_animations_button = QtWidgets.QPushButton("No Animations")
+        self.no_animations_button.clicked.connect(lambda: self.set_flags(no_animations_flags))
+        self.basic_layout.addWidget(self.no_animations_button)
+
+        self.network_ownership_button = QtWidgets.QPushButton("Set Network Ownership")
+        self.network_ownership_button.clicked.connect(lambda: self.set_flags(network_ownership_flags))
+        self.basic_layout.addWidget(self.network_ownership_button)
+
+        self.gravity_button = QtWidgets.QPushButton("Set Low Gravity")
+        self.gravity_button.clicked.connect(lambda: self.set_flags(low_gravity_flags))
+        self.basic_layout.addWidget(self.gravity_button)
+
+        self.cicle_under_avatar_button = QtWidgets.QPushButton("Add circles under avatars")
+        self.cicle_under_avatar_button.clicked.connect(lambda: self.set_flags(cicle_under_avatar_flags))
+        self.basic_layout.addWidget(self.cicle_under_avatar_button)
 
         self.hip_height_label = QtWidgets.QLabel("Set Hip Height Value:")
         self.basic_layout.addWidget(self.hip_height_label)
@@ -40,38 +72,6 @@ class RobloxFFlagEditor(QtWidgets.QWidget):
         self.set_hip_height_button = QtWidgets.QPushButton("Set Hip Height")
         self.set_hip_height_button.clicked.connect(self.set_hip_height)
         self.basic_layout.addWidget(self.set_hip_height_button)
-
-        self.network_ownership_button = QtWidgets.QPushButton("Set Network Ownership")
-        self.network_ownership_button.clicked.connect(lambda: self.set_flags(network_ownership_flags))
-        self.basic_layout.addWidget(self.network_ownership_button)
-
-        self.gravity_button = QtWidgets.QPushButton("Set Low Gravity")
-        self.gravity_button.clicked.connect(lambda: self.set_flags(low_gravity_flags))
-        self.basic_layout.addWidget(self.gravity_button)
-
-        self.no_animations_button = QtWidgets.QPushButton("No Animations")
-        self.no_animations_button.clicked.connect(lambda: self.set_flags(no_animations_flags))
-        self.basic_layout.addWidget(self.no_animations_button)
-
-        self.xray_button = QtWidgets.QPushButton("Xray")
-        self.xray_button.clicked.connect(lambda: self.set_flags(xray_flags))
-        self.basic_layout.addWidget(self.xray_button)
-
-        self.disable_telemetry_button = QtWidgets.QPushButton("Disable Telemetry")
-        self.disable_telemetry_button.clicked.connect(lambda: self.set_flags(disable_telemetry_flags))
-        self.basic_layout.addWidget(self.disable_telemetry_button)
-
-        self.disable_touch_events_button = QtWidgets.QPushButton("Disable touch events")
-        self.disable_telemetry_button.clicked.connect(lambda: self.set_flags(disable_touch_events_flags))
-        self.basic_layout.addWidget(self.disable_touch_events_button)
-
-        self.disable_ads_button = QtWidgets.QPushButton("Disable In-game Ads")
-        self.disable_ads_button.clicked.connect(lambda: self.toggle_fflag("Disable In-game Ads", disable_ads_flags))
-        self.basic_layout.addWidget(self.disable_ads_button)
-
-        self.disable_remote_events_button = QtWidgets.QPushButton("Disable Remote Events")
-        self.disable_remote_events_button.clicked.connect(lambda: self.toggle_fflag("Disable Remote Events", disable_remote_events_flags))
-        self.basic_layout.addWidget(self.disable_remote_events_button)
 
         self.max_zoom_label = QtWidgets.QLabel("Set Max Zoom Distance:")
         self.basic_layout.addWidget(self.max_zoom_label)
@@ -283,13 +283,6 @@ no_animations_flags = {
     "DFIntReplicatorAnimationTrackLimitPerAnimator": "-1"
 }
 
-xray_flags = {
-    "DFIntCullFactorPixelThresholdMainViewHighQuality": "10000",
-    "DFIntCullFactorPixelThresholdMainViewLowQuality": "10000",
-    "DFIntCullFactorPixelThresholdShadowMapHighQuality": "10000",
-    "DFIntCullFactorPixelThresholdShadowMapLowQuality": "10000"
-}
-
 disable_telemetry_flags = {
     "FFlagDebugDisableTelemetryEphemeralCounter": "True",
     "FFlagDebugDisableTelemetryEphemeralStat": "True",
@@ -310,6 +303,11 @@ disable_ads_flags = {
 
 disable_remote_events_flags = {
     "DFIntRemoteEventSingleInvocationSizeLimit": "1"
+}
+
+cicle_under_avatar_flags = {
+    "FFlagDebugAvatarChatVisualization": "True",
+    "FFlagEnableInGameMenuChromeABTest2": "False"
 }
 
 if __name__ == '__main__':
